@@ -63,7 +63,7 @@ func (p *Pen) Style() string {
 		fmt.Fprintf(&buf, "38;2;%d;%d;%d;", p.fg.R, p.fg.G, p.fg.B)
 	}
 
-	style := buf.String()[:buf.Len()-1] // remove trailing ';'
+	style := buf.String()[:buf.Len()-1]
 	return style + "m"
 }
 

@@ -31,7 +31,6 @@ func main() {
 }
 ```
 
-
 Pens can also be used to fire cursor movements and screen manipulations on the underlying writer.
 
 ```go

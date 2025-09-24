@@ -17,8 +17,8 @@ const (
 	_HyperLink = _Osc + "8;;%s" + _St + "%s" + _Osc + "8;;" + _St
 )
 
-// Reset returns an escape sequence that can reset all
-// the previously set styles.
+// Reset returns an escape sequence that can reset all the
+// previously set styles.
 func Reset() string { return _Reset }
 
 // Bold returns an escape sequence that can turn the text
