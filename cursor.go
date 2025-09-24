@@ -32,15 +32,15 @@ const (
 
 // CursorUp returns an escape sequence that can move the
 // curson n rows up.
-func CursorUp(n int) string    { return fmt.Sprintf(_CursorUp, n) }
+func CursorUp(n int) string { return fmt.Sprintf(_CursorUp, n) }
 
 // CursorDown returns an escape sequence that can move the
 // curson n rows down.
-func CursorDown(n int) string  { return fmt.Sprintf(_CursorDown, n) }
+func CursorDown(n int) string { return fmt.Sprintf(_CursorDown, n) }
 
 // CursorLeft returns an escape sequence that can move the
 // curson n columns backwards.
-func CursorLeft(n int) string  { return fmt.Sprintf(_CursorLeft, n) }
+func CursorLeft(n int) string { return fmt.Sprintf(_CursorLeft, n) }
 
 // CursorRight returns an escape sequence that can move the
 // curson n columns forwards.
@@ -48,7 +48,7 @@ func CursorRight(n int) string { return fmt.Sprintf(_CursorRight, n) }
 
 // MoveTo returns an escape sequence that can move the
 // curson to an absolute position on the grid.
-// 
+//
 // The top left corner is indexed (0, 0), contrary to
 // (1, 1) in the ANSI escape sequence interface.
 func MoveTo(r, c int) string { return fmt.Sprintf(_MoveTo, r+1, c+1) }
@@ -57,7 +57,7 @@ func MoveTo(r, c int) string { return fmt.Sprintf(_MoveTo, r+1, c+1) }
 // page up by n rows, that is, the n top rows will go out
 // of view and the content of the remaining rows will be
 // moved up.
-func ScrollUp(n int) string   { return fmt.Sprintf(_ScrollUp, n) }
+func ScrollUp(n int) string { return fmt.Sprintf(_ScrollUp, n) }
 
 // ScrollDown returns an escape sequence that can scroll
 // the page down by n rows, that is, the n bottom rows will
@@ -72,7 +72,7 @@ func EraseScreen() string { return _EraseScreen }
 // EraseLine returns an escape sequence that can erase the
 // current line the cursor is over. This does not move the
 // cursor.
-func EraseLine() string   { return _EraseLine }
+func EraseLine() string { return _EraseLine }
 
 // CursorStyle defines the style of the cursor.
 type CursorStyle int
