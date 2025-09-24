@@ -67,30 +67,51 @@ func (p *Pen) Style() string {
 	return style + "m"
 }
 
+// Resets the state os the pen
 func (p *Pen) Clear() { p.styles = 0 }
 
-func (p *Pen) Bold()      { p.styles |= _BoldFlag }
-func (p *Pen) Italic()    { p.styles |= _ItalicFlag }
-func (p *Pen) Underline() { p.styles |= _UnderlineFlag }
-func (p *Pen) Strike()    { p.styles |= _StrikeFlag }
+// Applies the bold style
+func (p *Pen) Bold() { p.styles |= _BoldFlag }
 
+// Applies the italic style
+func (p *Pen) Italic() { p.styles |= _ItalicFlag }
+
+// Applies the underline style
+func (p *Pen) Underline() { p.styles |= _UnderlineFlag }
+
+// Applies the strike style
+func (p *Pen) Strike() { p.styles |= _StrikeFlag }
+
+// Applies a background color
 func (p *Pen) BGColor(c Color) {
 	p.styles |= _BGFlag
 	r, g, b := c.RGB()
 	p.bg = RGB{r, g, b}
 }
 
+// Applies a foreground color
 func (p *Pen) FGColor(c Color) {
 	p.styles |= _FGFlag
 	r, g, b := c.RGB()
 	p.fg = RGB{r, g, b}
 }
 
-func (p *Pen) UnBold()           { p.styles &^= _BoldFlag }
-func (p *Pen) UnItalic()         { p.styles &^= _ItalicFlag }
-func (p *Pen) UnUnderline()      { p.styles &^= _UnderlineFlag }
-func (p *Pen) UnStrike()         { p.styles &^= _StrikeFlag }
+// Unapplies the bold style
+func (p *Pen) UnBold() { p.styles &^= _BoldFlag }
+
+// Unapplies the italic style
+func (p *Pen) UnItalic() { p.styles &^= _ItalicFlag }
+
+// Unapplies the underline style
+func (p *Pen) UnUnderline() { p.styles &^= _UnderlineFlag }
+
+// Unapplies the strike style
+func (p *Pen) UnStrike() { p.styles &^= _StrikeFlag }
+
+// Unapplies the background color
 func (p *Pen) UnBGColor(c Color) { p.styles &^= _BGFlag }
+
+// Unapplies the foreground color
 func (p *Pen) UnFGColor(c Color) { p.styles &^= _FGFlag }
 
 // Write writes the given buffer to the underlying writer
