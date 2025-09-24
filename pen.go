@@ -67,51 +67,51 @@ func (p *Pen) Style() string {
 	return style + "m"
 }
 
-// Resets the state os the pen
+// Clear resets the state os the pen.
 func (p *Pen) Clear() { p.styles = 0 }
 
-// Applies the bold style
+// Bold applies the bold style.
 func (p *Pen) Bold() { p.styles |= _BoldFlag }
 
-// Applies the italic style
+// Italic applies the italic style.
 func (p *Pen) Italic() { p.styles |= _ItalicFlag }
 
-// Applies the underline style
+// Underline applies the underline style.
 func (p *Pen) Underline() { p.styles |= _UnderlineFlag }
 
-// Applies the strike style
+// Strike applies the strike style.
 func (p *Pen) Strike() { p.styles |= _StrikeFlag }
 
-// Applies a background color
+// BGColor applies a background color.
 func (p *Pen) BGColor(c Color) {
 	p.styles |= _BGFlag
 	r, g, b := c.RGB()
 	p.bg = RGB{r, g, b}
 }
 
-// Applies a foreground color
+// FGColor applies a foreground color.
 func (p *Pen) FGColor(c Color) {
 	p.styles |= _FGFlag
 	r, g, b := c.RGB()
 	p.fg = RGB{r, g, b}
 }
 
-// Unapplies the bold style
+// UnBold unapplies the bold style.
 func (p *Pen) UnBold() { p.styles &^= _BoldFlag }
 
-// Unapplies the italic style
+// UnItalic unapplies the italic style.
 func (p *Pen) UnItalic() { p.styles &^= _ItalicFlag }
 
-// Unapplies the underline style
+// UnUnderline unapplies the underline style.
 func (p *Pen) UnUnderline() { p.styles &^= _UnderlineFlag }
 
-// Unapplies the strike style
+// UnStrike unapplies the strike style.
 func (p *Pen) UnStrike() { p.styles &^= _StrikeFlag }
 
-// Unapplies the background color
+// UnBGColor unapplies the background color.
 func (p *Pen) UnBGColor(c Color) { p.styles &^= _BGFlag }
 
-// Unapplies the foreground color
+// UnFGColor unapplies the foreground color.
 func (p *Pen) UnFGColor(c Color) { p.styles &^= _FGFlag }
 
 // Write writes the given buffer to the underlying writer
@@ -122,6 +122,24 @@ func (p *Pen) Write(buf []byte) (int, error) {
 	p.Writer.Write([]byte(p.Style()))
 
 	return p.Writer.Write(buf)
+}
+
+// Sprint mimics their fmt counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Sprint(a ...any) string {
+	return p.Style() + fmt.Sprint(a...) + _Reset
+}
+
+// Sprintf mimics their fmt counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Sprintf(format string, a ...any) string {
+	return p.Style() + fmt.Sprintf(format, a...) + _Reset
+}
+
+// Sprintln mimics their fmt counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Sprintln(a ...any) string {
+	return p.Sprint(a...) + "\n"
 }
 
 // CursorUp moves the cursor up by n rows.
