@@ -12,6 +12,16 @@ type Color interface {
 	RGB() (R, G, B uint8)
 }
 
+// RGBFrom takes a concrete [Color] and returns its RGB
+// represetation. 
+// 
+// This serves to avoid recalculations for more complex
+// [Color] types.
+func RGBFromColor(c Color) RGB {
+	r, g, b := c.RGB()
+	return RGB{r, g, b}
+}
+
 // RGB is a color defined by its red, green and blue
 // components.
 type RGB struct{ R, G, B uint8 }
