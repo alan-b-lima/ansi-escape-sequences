@@ -76,8 +76,15 @@ func (p *Pen) SetStyle(on bool) {
 	p.disabled = !on
 }
 
-// Clear resets the state os the pen.
+// Clear resets the style of the pen.
+//
+// Deprecated: use [Pen.Reset] instead.
 func (p *Pen) Clear() *Pen {
+	return p.Reset()
+}
+
+// Reset resets the style of the pen.
+func (p *Pen) Reset() *Pen {
 	p.styles = 0
 	return p
 }
