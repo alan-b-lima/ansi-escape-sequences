@@ -21,7 +21,7 @@ type Pen struct {
 
 	styles   byte // bitmask of styles
 	fg, bg   RGB  // foreground and background colors
-	disabled bool
+	disabled bool // disables the styling
 }
 
 const (
@@ -77,51 +77,88 @@ func (p *Pen) SetStyle(on bool) {
 }
 
 // Clear resets the state os the pen.
-func (p *Pen) Clear() { p.styles = 0 }
+func (p *Pen) Clear() *Pen {
+	p.styles = 0
+	return p
+}
 
 // Bold applies the bold style.
-func (p *Pen) Bold() { p.styles |= _BoldFlag }
+func (p *Pen) Bold() *Pen {
+	p.styles |= _BoldFlag
+	return p
+}
 
 // Italic applies the italic style.
-func (p *Pen) Italic() { p.styles |= _ItalicFlag }
+func (p *Pen) Italic() *Pen {
+	p.styles |= _ItalicFlag
+	return p
+}
 
 // Underline applies the underline style.
-func (p *Pen) Underline() { p.styles |= _UnderlineFlag }
+func (p *Pen) Underline() *Pen {
+	p.styles |= _UnderlineFlag
+	return p
+}
 
 // Strike applies the strike style.
-func (p *Pen) Strike() { p.styles |= _StrikeFlag }
+func (p *Pen) Strike() *Pen {
+	p.styles |= _StrikeFlag
+	return p
+}
 
 // BGColor applies a background color.
-func (p *Pen) BGColor(c Color) {
+func (p *Pen) BGColor(c Color) *Pen {
 	p.styles |= _BGFlag
 	r, g, b := c.RGB()
 	p.bg = RGB{r, g, b}
+
+	return p
 }
 
 // FGColor applies a foreground color.
-func (p *Pen) FGColor(c Color) {
+func (p *Pen) FGColor(c Color) *Pen {
 	p.styles |= _FGFlag
 	r, g, b := c.RGB()
 	p.fg = RGB{r, g, b}
+
+	return p
 }
 
 // UnBold unapplies the bold style.
-func (p *Pen) UnBold() { p.styles &^= _BoldFlag }
+func (p *Pen) UnBold() *Pen {
+	p.styles &^= _BoldFlag
+	return p
+}
 
 // UnItalic unapplies the italic style.
-func (p *Pen) UnItalic() { p.styles &^= _ItalicFlag }
+func (p *Pen) UnItalic() *Pen {
+	p.styles &^= _ItalicFlag
+	return p
+}
 
 // UnUnderline unapplies the underline style.
-func (p *Pen) UnUnderline() { p.styles &^= _UnderlineFlag }
+func (p *Pen) UnUnderline() *Pen {
+	p.styles &^= _UnderlineFlag
+	return p
+}
 
 // UnStrike unapplies the strike style.
-func (p *Pen) UnStrike() { p.styles &^= _StrikeFlag }
+func (p *Pen) UnStrike() *Pen {
+	p.styles &^= _StrikeFlag
+	return p
+}
 
 // UnBGColor unapplies the background color.
-func (p *Pen) UnBGColor(c Color) { p.styles &^= _BGFlag }
+func (p *Pen) UnBGColor(c Color) *Pen {
+	p.styles &^= _BGFlag
+	return p
+}
 
 // UnFGColor unapplies the foreground color.
-func (p *Pen) UnFGColor(c Color) { p.styles &^= _FGFlag }
+func (p *Pen) UnFGColor(c Color) *Pen {
+	p.styles &^= _FGFlag
+	return p
+}
 
 // Write writes the given buffer to the underlying writer
 // with the current styles applied. It also appends a reset
