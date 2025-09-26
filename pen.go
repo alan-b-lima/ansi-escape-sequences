@@ -3,6 +3,7 @@ package ansi
 import (
 	"fmt"
 	"io"
+	"math/bits"
 	"strings"
 )
 
@@ -18,8 +19,9 @@ import (
 type Pen struct {
 	io.Writer // underlying writer
 
-	styles byte // bitmask of styles
-	fg, bg RGB  // foreground and background colors
+	styles   byte // bitmask of styles
+	fg, bg   RGB  // foreground and background colors
+	disabled bool
 }
 
 const (
@@ -37,6 +39,7 @@ var _ResetBytes = []byte(_Reset)
 // If no styles are set, it returns an reset escape sequence.
 func (p *Pen) Style() string {
 	var buf strings.Builder
+	buf.Grow(p._StyleCapNeeded())
 	buf.WriteString(_Csi)
 
 	if p.styles&_BoldFlag != 0 {
@@ -65,6 +68,12 @@ func (p *Pen) Style() string {
 
 	style := buf.String()[:buf.Len()-1]
 	return style + "m"
+}
+
+// SetStyle defines, based on the on param, whether the
+// pen styles will be applied on writing.
+func (p *Pen) SetStyle(on bool) {
+	p.disabled = !on
 }
 
 // Clear resets the state os the pen.
@@ -118,26 +127,73 @@ func (p *Pen) UnFGColor(c Color) { p.styles &^= _FGFlag }
 // with the current styles applied. It also appends a reset
 // sequence at the end to reset all styles.
 func (p *Pen) Write(buf []byte) (int, error) {
-	defer p.Writer.Write(_ResetBytes)
-	p.Writer.Write([]byte(p.Style()))
+	if !p.disabled {
+		defer p.Writer.Write(_ResetBytes)
+		p.Writer.Write([]byte(p.Style()))
+	}
 
 	return p.Writer.Write(buf)
 }
 
-// Sprint mimics their fmt counterpart while wrapping the
+// Fprint mimics their [fmt.Fprint] counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Fprint(w io.Writer, a ...any) (int, error) {
+	pen := *p
+	pen.Writer = w
+
+	return fmt.Fprint(&pen, a...)
+}
+
+// Fprintf mimics their [fmt.Fprintf] counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Fprintf(w io.Writer, format string, a ...any) (int, error) {
+	pen := *p
+	pen.Writer = w
+
+	return fmt.Fprintf(&pen, format, a...)
+}
+
+// Fprintln mimics their [fmt.Fprintln] counterpart while wrapping
+// the output in the style of the pen.
+func (p *Pen) Fprintln(w io.Writer, a ...any) (int, error) {
+	pen := *p
+	pen.Writer = w
+
+	return fmt.Fprintln(&pen, a...)
+}
+
+// Print mimics their [fmt.Print] counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Print(a ...any) (int, error) {
+	return fmt.Fprint(p, a...)
+}
+
+// Printf mimics their [fmt.Printf] counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Printf(format string, a ...any) (int, error) {
+	return fmt.Fprintf(p, format, a...)
+}
+
+// Println mimics their [fmt.Println] counterpart while wrapping the
+// output in the style of the pen.
+func (p *Pen) Println(a ...any) (int, error) {
+	return fmt.Fprintln(p, a...)
+}
+
+// Sprint mimics their [fmt.Sprint] counterpart while wrapping the
 // output in the style of the pen.
 func (p *Pen) Sprint(a ...any) string {
 	return p.Style() + fmt.Sprint(a...) + _Reset
 }
 
-// Sprintf mimics their fmt counterpart while wrapping the
+// Sprintf mimics their [fmt.Sprintf] counterpart while wrapping the
 // output in the style of the pen.
 func (p *Pen) Sprintf(format string, a ...any) string {
 	return p.Style() + fmt.Sprintf(format, a...) + _Reset
 }
 
-// Sprintln mimics their fmt counterpart while wrapping the
-// output in the style of the pen.
+// Sprintln mimics their [fmt.Sprintln] counterpart while wrapping
+// the output in the style of the pen.
 func (p *Pen) Sprintln(a ...any) string {
 	return p.Sprint(a...) + "\n"
 }
@@ -193,3 +249,14 @@ func (p *Pen) EnterBracketedPaste() { p.Writer.Write([]byte(_EnterBracketedPaste
 // LeaveBracketedPaste takes the terminal out of bracketed
 // paste mode.
 func (p *Pen) LeaveBracketedPaste() { p.Writer.Write([]byte(_LeaveBracketedPaste)) }
+
+func (p *Pen) _StyleCapNeeded() int {
+	const small_mask = _BoldFlag | _ItalicFlag | _UnderlineFlag | _StrikeFlag
+	const ground_mask = _BGFlag | _FGFlag
+
+	cap := len(_Csi)
+	cap += 2 * bits.OnesCount(uint(p.styles&small_mask))
+	cap += 14 * bits.OnesCount(uint(p.styles&ground_mask))
+
+	return cap
+}
