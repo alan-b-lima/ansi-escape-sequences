@@ -10,8 +10,16 @@ const (
 	_Underline = _Csi + "4m"
 	_Strike    = _Csi + "9m"
 
+	_UnBold      = _Csi + "22m"
+	_UnItalic    = _Csi + "23m"
+	_UnUnderline = _Csi + "24m"
+	_UnStrike    = _Csi + "29m"
+
 	_FGColor = _Csi + "38;2;%d;%d;%dm"
 	_BGColor = _Csi + "48;2;%d;%d;%dm"
+
+	_UnFGColor = _Csi + "39m"
+	_UnBGColor = _Csi + "49m"
 
 	_St        = _Esc + "\\"
 	_HyperLink = _Osc + "8;;%s" + _St + "%s" + _Osc + "8;;" + _St
@@ -31,7 +39,13 @@ func Italic() string { return _Italic }
 
 // Underline returns an escape sequence that can put an
 // underline on the text.
-func Undeline() string { return _Underline }
+//
+// Deprecated: contains a typo, use [Underline] instead.
+func Undeline() string { return Underline() }
+
+// Underline returns an escape sequence that can put an
+// underline on the text.
+func Underline() string { return _Underline }
 
 // Strike returns an escape sequence that can strikethrough
 // the text.
