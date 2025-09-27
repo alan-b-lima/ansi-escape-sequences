@@ -1,5 +1,5 @@
-// ANSI Escape Sequences is a minimal Go library to abstract ANSI
-// escape sequences.
+// Package ansi provides utilities for building ANSI escape sequences
+// for terminal text formatting, colors, and cursor control.
 package ansi
 
 const (
