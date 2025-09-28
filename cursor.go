@@ -15,6 +15,7 @@ const (
 	_ScrollUp   = _Csi + "%dS"
 	_ScrollDown = _Csi + "%dT"
 
+	_Restart     = _Esc + "c"
 	_EraseScreen = _Csi + "2J"
 	_EraseLine   = _Csi + "2K"
 
@@ -64,6 +65,11 @@ func ScrollUp(n int) string { return fmt.Sprintf(_ScrollUp, n) }
 // go out of view and the content of the remaining rows
 // will be moved down.
 func ScrollDown(n int) string { return fmt.Sprintf(_ScrollDown, n) }
+
+// Restart resets all terminal configurations to default,
+// this includes, but not limited to, erasure of the all
+// the buffer of the terminal emulator.
+func Restart() string { return _Restart }
 
 // EraseScreen returns an escape sequence that can erase
 // the entire screen. This does not move the cursor.
