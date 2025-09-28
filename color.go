@@ -12,14 +12,24 @@ type Color interface {
 	RGB() (R, G, B uint8)
 }
 
-// RGBFrom takes a concrete [Color] and returns its RGB
-// represetation. 
-// 
-// This serves to avoid recalculations for more complex
-// [Color] types.
+// RGBFromColor takes a concrete [Color] and returns its
+// [RGB] represetation. This serves to avoid recalculations
+// for more complex [Color] types.
 func RGBFromColor(c Color) RGB {
 	r, g, b := c.RGB()
 	return RGB{r, g, b}
+}
+
+// RGBFromHex takes a hex number (technically, any untyped
+// int or int would work) of form 0xRRGGBB and returns its
+// [RGB] represetation. It ignores any values outside of
+// the 24 first bits.
+func RGBFromHex(hex int) RGB {
+	return RGB{
+		uint8(hex >> 0x10),
+		uint8(hex >> 0x08),
+		uint8(hex >> 0x00),
+	}
 }
 
 // RGB is a color defined by its red, green and blue
