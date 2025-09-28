@@ -58,87 +58,74 @@ func (b *Builder) Grow(n int) {
 
 // Reset appends sequence which clears all text formatting and
 // colors.
-func (b *Builder) Reset() *Builder {
+func (b *Builder) Reset() {
 	b.buf = append(b.buf, _Reset...)
-	return b
 }
 
 // Bold appends a sequence to apply the bold style.
-func (b *Builder) Bold() *Builder {
+func (b *Builder) Bold() {
 	b.buf = append(b.buf, _Bold...)
-	return b
 }
 
 // Italic appends a sequence to apply the italic style.
-func (b *Builder) Italic() *Builder {
+func (b *Builder) Italic() {
 	b.buf = append(b.buf, _Italic...)
-	return b
 }
 
 // Underline appends a sequence to appply underline style.
-func (b *Builder) Underline() *Builder {
+func (b *Builder) Underline() {
 	b.buf = append(b.buf, _Underline...)
-	return b
 }
 
 // Strike appends a sequence to apply the strikethrough style.
-func (b *Builder) Strike() *Builder {
+func (b *Builder) Strike() {
 	b.buf = append(b.buf, _Strike...)
-	return b
 }
 
 // BGColor appends a sequence to set the background color to the
 // specified color.
-func (b *Builder) BGColor(c Color) *Builder {
+func (b *Builder) BGColor(c Color) {
 	R, G, B := c.RGB()
 	b.buf = fmt.Appendf(b.buf, _BGColor, R, G, B)
-	return b
 }
 
 // FGColor appends a sequence to set the foreground color to the
 // specified color.
-func (b *Builder) FGColor(c Color) *Builder {
+func (b *Builder) FGColor(c Color) {
 	R, G, B := c.RGB()
 	b.buf = fmt.Appendf(b.buf, _FGColor, R, G, B)
-	return b
 }
 
 // UnBold appends a sequence to disable bold style.
-func (b *Builder) UnBold() *Builder {
+func (b *Builder) UnBold() {
 	b.buf = append(b.buf, _UnBold...)
-	return b
 }
 
 // UnItalic appends a sequence to disable italic style.
-func (b *Builder) UnItalic() *Builder {
+func (b *Builder) UnItalic() {
 	b.buf = append(b.buf, _UnItalic...)
-	return b
 }
 
 // UnUnderline appends a sequence to disable underline style.
-func (b *Builder) UnUnderline() *Builder {
+func (b *Builder) UnUnderline() {
 	b.buf = append(b.buf, _UnUnderline...)
-	return b
 }
 
 // UnStrike appends a sequence to disable strikethrough style.
-func (b *Builder) UnStrike() *Builder {
+func (b *Builder) UnStrike() {
 	b.buf = append(b.buf, _UnStrike...)
-	return b
 }
 
 // UnBGColor appends a sequence to reset the background color to the
 // default.
-func (b *Builder) UnBGColor() *Builder {
+func (b *Builder) UnBGColor() {
 	b.buf = append(b.buf, _UnBGColor...)
-	return b
 }
 
 // UnFGColor appends a sequence to reset the foreground color to the
 // default.
-func (b *Builder) UnFGColor() *Builder {
+func (b *Builder) UnFGColor() {
 	b.buf = append(b.buf, _UnFGColor...)
-	return b
 }
 
 // String returns the accumulated string in the builder's buffer.
@@ -199,112 +186,95 @@ func (b *Builder) FlushTo(w io.Writer) (int, error) {
 }
 
 // CursorUp appends a sequence to move the cursor up by n lines.
-func (b *Builder) CursorUp(n int) *Builder {
+func (b *Builder) CursorUp(n int) {
 	b.buf = fmt.Appendf(b.buf, _CursorUp, n)
-	return b
 }
 
 // CursorDown appends a sequence to move the cursor down by n
 // rows.
-func (b *Builder) CursorDown(n int) *Builder {
+func (b *Builder) CursorDown(n int) {
 	b.buf = fmt.Appendf(b.buf, _CursorDown, n)
-	return b
 }
 
 // CursorLeft appends a sequence to move the cursor left by n
 // columns.
-func (b *Builder) CursorLeft(n int) *Builder {
+func (b *Builder) CursorLeft(n int) {
 	b.buf = fmt.Appendf(b.buf, _CursorLeft, n)
-	return b
 }
 
 // CursorRight appends a sequence to move the cursor right by n
 // columns.
-func (b *Builder) CursorRight(n int) *Builder {
+func (b *Builder) CursorRight(n int) {
 	b.buf = fmt.Appendf(b.buf, _CursorRight, n)
-	return b
 }
 
-// 
 // MoveTo appends a sequence to move the curson to an absolute
 // position on the grid. Both parameters are 0-indexed, albeit the
 // ANSI sequence uses 1-indexed coordinates.
-func (b *Builder) MoveTo(r, c int) *Builder {
+func (b *Builder) MoveTo(r, c int) {
 	b.buf = fmt.Appendf(b.buf, _MoveTo, r+1, c+1)
-	return b
 }
 
 // ScrollUp appends a sequence to scroll the screen up by n lines.
 
-func (b *Builder) ScrollUp(n int) *Builder {
+func (b *Builder) ScrollUp(n int) {
 	b.buf = fmt.Appendf(b.buf, _ScrollUp, n)
-	return b
 }
 
 // ScrollDown appends a sequence to scroll the screen down by n
 // lines.
-func (b *Builder) ScrollDown(n int) *Builder {
+func (b *Builder) ScrollDown(n int) {
 	b.buf = fmt.Appendf(b.buf, _ScrollDown, n)
-	return b
 }
 
 // EraseScreen appends a sequence to clear the entire screen.
-func (b *Builder) EraseScreen() *Builder {
+func (b *Builder) EraseScreen() {
 	b.buf = append(b.buf, _EraseScreen...)
-	return b
 }
 
 // EraseLine appends a sequence to clear the current line.
-func (b *Builder) EraseLine() *Builder {
+func (b *Builder) EraseLine() {
 	b.buf = append(b.buf, _EraseLine...)
-	return b
 }
 
 // StyleCursor appends a sequence to set the cursor style. The
 // CursorStyle value is 0-indexed but the ANSI sequence uses
 // 1-indexed values.
-func (b *Builder) StyleCursor(s CursorStyle) *Builder {
+func (b *Builder) StyleCursor(s CursorStyle) {
 	b.buf = fmt.Appendf(b.buf, _StyleCursor, s+1)
-	return b
 }
 
 // ShowCursor appends a sequence to make the cursor visible.
-func (b *Builder) ShowCursor() *Builder {
+func (b *Builder) ShowCursor() {
 	b.buf = append(b.buf, _ShowCursor...)
-	return b
 }
 
 // HideCursor appends a sequence to make the cursor invisible.
-func (b *Builder) HideCursor() *Builder {
+func (b *Builder) HideCursor() {
 	b.buf = append(b.buf, _HideCursor...)
-	return b
 }
 
 // EnterAlt appends a sequence to switch to the alternate screen
 // buffer.
-func (b *Builder) EnterAlt() *Builder {
+func (b *Builder) EnterAlt() {
 	b.buf = append(b.buf, _EnterAlt...)
-	return b
 }
 
 // LeaveAlt appends a sequence to switch back to the main screen
 // buffer from the alternate screen buffer.
-func (b *Builder) LeaveAlt() *Builder {
+func (b *Builder) LeaveAlt() {
 	b.buf = append(b.buf, _LeaveAlt...)
-	return b
 }
 
 // EnterBracketedPaste appends a sequence to enable bracketed paste
 // mode. In this mode, pasted text is wrapped between ESC[200~ and
 // ESC[201~.
-func (b *Builder) EnterBracketedPaste() *Builder {
+func (b *Builder) EnterBracketedPaste() {
 	b.buf = append(b.buf, _EnterBracketedPaste...)
-	return b
 }
 
 // LeaveBracketedPaste appends a sequence to disable bracketed paste
 // mode.
-func (b *Builder) LeaveBracketedPaste() *Builder {
+func (b *Builder) LeaveBracketedPaste() {
 	b.buf = append(b.buf, _LeaveBracketedPaste...)
-	return b
 }

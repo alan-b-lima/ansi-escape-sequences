@@ -76,95 +76,73 @@ func (p *Pen) SetStyle(on bool) {
 	p.disabled = !on
 }
 
-// Clear resets the style of the pen.
-//
-// Deprecated: use [Pen.Reset] instead.
-func (p *Pen) Clear() *Pen {
-	return p.Reset()
-}
-
 // Reset resets the style of the pen.
-func (p *Pen) Reset() *Pen {
+func (p *Pen) Reset() {
 	p.styles = 0
-	return p
 }
 
 // Bold applies the bold style.
-func (p *Pen) Bold() *Pen {
+func (p *Pen) Bold() {
 	p.styles |= _BoldFlag
-	return p
 }
 
 // Italic applies the italic style.
-func (p *Pen) Italic() *Pen {
+func (p *Pen) Italic() {
 	p.styles |= _ItalicFlag
-	return p
 }
 
 // Underline applies the underline style.
-func (p *Pen) Underline() *Pen {
+func (p *Pen) Underline() {
 	p.styles |= _UnderlineFlag
-	return p
 }
 
 // Strike applies the strike style.
-func (p *Pen) Strike() *Pen {
+func (p *Pen) Strike() {
 	p.styles |= _StrikeFlag
-	return p
 }
 
 // BGColor applies a background color.
-func (p *Pen) BGColor(c Color) *Pen {
+func (p *Pen) BGColor(c Color) {
 	p.styles |= _BGFlag
 	r, g, b := c.RGB()
 	p.bg = RGB{r, g, b}
-
-	return p
 }
 
 // FGColor applies a foreground color.
-func (p *Pen) FGColor(c Color) *Pen {
+func (p *Pen) FGColor(c Color) {
 	p.styles |= _FGFlag
 	r, g, b := c.RGB()
 	p.fg = RGB{r, g, b}
-
-	return p
 }
 
 // UnBold unapplies the bold style.
-func (p *Pen) UnBold() *Pen {
+func (p *Pen) UnBold() {
 	p.styles &^= _BoldFlag
-	return p
 }
 
 // UnItalic unapplies the italic style.
-func (p *Pen) UnItalic() *Pen {
+func (p *Pen) UnItalic() {
 	p.styles &^= _ItalicFlag
-	return p
 }
 
 // UnUnderline unapplies the underline style.
-func (p *Pen) UnUnderline() *Pen {
+func (p *Pen) UnUnderline() {
 	p.styles &^= _UnderlineFlag
-	return p
 }
 
 // UnStrike unapplies the strike style.
-func (p *Pen) UnStrike() *Pen {
+func (p *Pen) UnStrike() {
 	p.styles &^= _StrikeFlag
-	return p
 }
 
 // UnBGColor unapplies the background color.
-func (p *Pen) UnBGColor(c Color) *Pen {
+func (p *Pen) UnBGColor(c Color) {
 	p.styles &^= _BGFlag
-	return p
 }
 
 // UnFGColor unapplies the foreground color.
-func (p *Pen) UnFGColor(c Color) *Pen {
+func (p *Pen) UnFGColor(c Color) {
 	p.styles &^= _FGFlag
-	return p
 }
 
 // Write writes the given buffer to the underlying writer
