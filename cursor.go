@@ -84,12 +84,12 @@ func EraseLine() string { return _EraseLine }
 type CursorStyle int
 
 const (
-	Blink  CursorStyle = 0b000
-	Steady CursorStyle = 0b001
+	CursorBlink  CursorStyle = 0b000
+	CursorSteady CursorStyle = 0b001
 
-	FullBlock CursorStyle = 0b000
-	UnderLine CursorStyle = 0b010
-	LeftBar   CursorStyle = 0b100
+	CursorFullBlock CursorStyle = 0b000
+	CursorUnderline CursorStyle = 0b010
+	CursorBar       CursorStyle = 0b100
 )
 
 // StyleCursor returns an escape sequence that can change
