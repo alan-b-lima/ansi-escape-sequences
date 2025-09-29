@@ -72,34 +72,22 @@ func (p *Pen) Style() string {
 
 // SetStyle defines, based on the on param, whether the
 // pen styles will be applied on writing.
-func (p *Pen) SetStyle(on bool) {
-	p.disabled = !on
-}
+func (p *Pen) SetStyle(on bool) { p.disabled = !on }
 
 // Reset resets the style of the pen.
-func (p *Pen) Reset() {
-	p.styles = 0
-}
+func (p *Pen) Reset() { p.styles = 0 }
 
 // Bold applies the bold style.
-func (p *Pen) Bold() {
-	p.styles |= _BoldFlag
-}
+func (p *Pen) Bold() { p.styles |= _BoldFlag }
 
 // Italic applies the italic style.
-func (p *Pen) Italic() {
-	p.styles |= _ItalicFlag
-}
+func (p *Pen) Italic() { p.styles |= _ItalicFlag }
 
 // Underline applies the underline style.
-func (p *Pen) Underline() {
-	p.styles |= _UnderlineFlag
-}
+func (p *Pen) Underline() { p.styles |= _UnderlineFlag }
 
 // Strike applies the strike style.
-func (p *Pen) Strike() {
-	p.styles |= _StrikeFlag
-}
+func (p *Pen) Strike() { p.styles |= _StrikeFlag }
 
 // BGColor applies a background color.
 func (p *Pen) BGColor(c Color) {
@@ -116,34 +104,22 @@ func (p *Pen) FGColor(c Color) {
 }
 
 // UnBold unapplies the bold style.
-func (p *Pen) UnBold() {
-	p.styles &^= _BoldFlag
-}
+func (p *Pen) UnBold() { p.styles &^= _BoldFlag }
 
 // UnItalic unapplies the italic style.
-func (p *Pen) UnItalic() {
-	p.styles &^= _ItalicFlag
-}
+func (p *Pen) UnItalic() { p.styles &^= _ItalicFlag }
 
 // UnUnderline unapplies the underline style.
-func (p *Pen) UnUnderline() {
-	p.styles &^= _UnderlineFlag
-}
+func (p *Pen) UnUnderline() { p.styles &^= _UnderlineFlag }
 
 // UnStrike unapplies the strike style.
-func (p *Pen) UnStrike() {
-	p.styles &^= _StrikeFlag
-}
+func (p *Pen) UnStrike() { p.styles &^= _StrikeFlag }
 
 // UnBGColor unapplies the background color.
-func (p *Pen) UnBGColor(c Color) {
-	p.styles &^= _BGFlag
-}
+func (p *Pen) UnBGColor(c Color) { p.styles &^= _BGFlag }
 
 // UnFGColor unapplies the foreground color.
-func (p *Pen) UnFGColor(c Color) {
-	p.styles &^= _FGFlag
-}
+func (p *Pen) UnFGColor(c Color) { p.styles &^= _FGFlag }
 
 // Write writes the given buffer to the underlying writer
 // with the current styles applied. It also appends a reset
@@ -221,64 +197,67 @@ func (p *Pen) Sprintln(a ...any) string {
 }
 
 // CursorUp moves the cursor up by n rows.
-func (p *Pen) CursorUp(n int) { fmt.Fprintf(p.Writer, _CursorUp, n) }
+func (p *Pen) CursorUp(n int) { p.Writer.Write([]byte(CursorUp(n))) }
 
 // CursorDown moves the cursor down by n rows.
-func (p *Pen) CursorDown(n int) { fmt.Fprintf(p.Writer, _CursorDown, n) }
+func (p *Pen) CursorDown(n int) { p.Writer.Write([]byte(CursorDown(n))) }
 
 // CursorLeft moves the cursor backwards by n columns.
-func (p *Pen) CursorLeft(n int) { fmt.Fprintf(p.Writer, _CursorLeft, n) }
+func (p *Pen) CursorLeft(n int) { p.Writer.Write([]byte(CursorLeft(n))) }
 
 // CursorRight moves the cursor forwards by n columns.
-func (p *Pen) CursorRight(n int) { fmt.Fprintf(p.Writer, _CursorRight, n) }
+func (p *Pen) CursorRight(n int) { p.Writer.Write([]byte(CursorRight(n))) }
 
 // MoveTo moves the cursor to the given row and column.
 // Note that both row and column are 0-indexed.
-func (p *Pen) MoveTo(r, c int) { fmt.Fprintf(p.Writer, _MoveTo, r+1, c+1) }
+func (p *Pen) MoveTo(r, c int) { p.Writer.Write([]byte(MoveTo(r, c))) }
 
 // ScrollUp scrolls the entire screen up by n rows.
-func (p *Pen) ScrollUp(n int) { fmt.Fprintf(p.Writer, _ScrollUp, n) }
+func (p *Pen) ScrollUp(n int) { p.Writer.Write([]byte(ScrollUp(n))) }
 
 // ScrollDown scrolls the entire screen down by n rows.
-func (p *Pen) ScrollDown(n int) { fmt.Fprintf(p.Writer, _ScrollDown, n) }
+func (p *Pen) ScrollDown(n int) { p.Writer.Write([]byte(ScrollDown(n))) }
 
 // EraseScreen erases the entire screen.
-func (p *Pen) EraseScreen() { p.Writer.Write([]byte(_EraseScreen)) }
+func (p *Pen) EraseScreen() { p.Writer.Write([]byte(EraseScreen())) }
 
 // EraseLine erases the entire current line.
-func (p *Pen) EraseLine() { p.Writer.Write([]byte(_EraseLine)) }
+func (p *Pen) EraseLine() { p.Writer.Write([]byte(EraseLine())) }
 
 // StyleCursor sets the cursor style to the given style.
-func (p *Pen) StyleCursor(s CursorStyle) { fmt.Fprintf(p.Writer, _StyleCursor, s+1) }
+func (p *Pen) StyleCursor(s CursorStyle) { p.Writer.Write([]byte(StyleCursor(s))) }
 
 // ShowCursor makes the cursor visible.
-func (p *Pen) ShowCursor() { p.Writer.Write([]byte(_ShowCursor)) }
+func (p *Pen) ShowCursor() { p.Writer.Write([]byte(ShowCursor())) }
 
 // HideCursor makes the cursor invisible.
-func (p *Pen) HideCursor() { p.Writer.Write([]byte(_HideCursor)) }
+func (p *Pen) HideCursor() { p.Writer.Write([]byte(HideCursor())) }
 
 // EnterAlt switches to the alternate screen buffer.
-func (p *Pen) EnterAlt() { p.Writer.Write([]byte(_EnterAlt)) }
+func (p *Pen) EnterAlt() { p.Writer.Write([]byte(EnterAlt())) }
 
 // LeaveAlt switches back to the normal screen buffer.
-func (p *Pen) LeaveAlt() { p.Writer.Write([]byte(_LeaveAlt)) }
+func (p *Pen) LeaveAlt() { p.Writer.Write([]byte(LeaveAlt())) }
 
 // EnterBracketedPaste puts the terminal into bracketed
 // paste mode. In this mode, pasted text is wrapped between
 // ESC[200~ and ESC[201~.
-func (p *Pen) EnterBracketedPaste() { p.Writer.Write([]byte(_EnterBracketedPaste)) }
+func (p *Pen) EnterBracketedPaste() { p.Writer.Write([]byte(EnterBracketedPaste())) }
 
 // LeaveBracketedPaste takes the terminal out of bracketed
 // paste mode.
-func (p *Pen) LeaveBracketedPaste() { p.Writer.Write([]byte(_LeaveBracketedPaste)) }
+func (p *Pen) LeaveBracketedPaste() { p.Writer.Write([]byte(LeaveBracketedPaste())) }
 
 func (p *Pen) _StyleCapNeeded() int {
-	const small_mask = _BoldFlag | _ItalicFlag | _UnderlineFlag | _StrikeFlag
+	const style_mask = _BoldFlag | _ItalicFlag | _UnderlineFlag | _StrikeFlag
 	const ground_mask = _BGFlag | _FGFlag
 
+	const style_flag_size = 2
+	const ground_flag_size = 14
+
 	cap := len(_Csi)
-	cap += 2 * bits.OnesCount(uint(p.styles&small_mask))
-	cap += 14 * bits.OnesCount(uint(p.styles&ground_mask))
+	cap += style_flag_size * bits.OnesCount(uint(p.styles&style_mask))
+	cap += ground_flag_size * bits.OnesCount(uint(p.styles&ground_mask))
 
 	return cap
 }

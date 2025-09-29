@@ -1,7 +1,6 @@
 package ansi
 
 import (
-	"fmt"
 	"io"
 	"unicode/utf8"
 )
@@ -32,7 +31,7 @@ func (b *Builder) Cap() int {
 
 // Clear resets the builder's buffer to be empty, but retains the
 // underlying storage for use by future writes. This would be
-// equivalent to [strings.Builder.Reset] in the [strinngs.Builder]
+// equivalent to [strings.Builder.Reset] in the [strings.Builder]
 // type, but uses "Clear" to avoid confusion with the ANSI reset
 // sequence.
 func (b *Builder) Clear() {
@@ -59,74 +58,56 @@ func (b *Builder) Grow(n int) {
 // Reset appends sequence which clears all text formatting and
 // colors.
 func (b *Builder) Reset() {
-	b.buf = append(b.buf, _Reset...)
+	b.buf = append(b.buf, Reset()...)
 }
 
 // Bold appends a sequence to apply the bold style.
 func (b *Builder) Bold() {
-	b.buf = append(b.buf, _Bold...)
+	b.buf = append(b.buf, Bold()...)
 }
 
 // Italic appends a sequence to apply the italic style.
 func (b *Builder) Italic() {
-	b.buf = append(b.buf, _Italic...)
+	b.buf = append(b.buf, Italic()...)
 }
 
 // Underline appends a sequence to appply underline style.
 func (b *Builder) Underline() {
-	b.buf = append(b.buf, _Underline...)
+	b.buf = append(b.buf, Underline()...)
 }
 
 // Strike appends a sequence to apply the strikethrough style.
 func (b *Builder) Strike() {
-	b.buf = append(b.buf, _Strike...)
+	b.buf = append(b.buf, Strike()...)
 }
 
 // BGColor appends a sequence to set the background color to the
 // specified color.
-func (b *Builder) BGColor(c Color) {
-	R, G, B := c.RGB()
-	b.buf = fmt.Appendf(b.buf, _BGColor, R, G, B)
-}
+func (b *Builder) BGColor(c Color) { b.buf = append(b.buf, BGColor(c)...) }
 
 // FGColor appends a sequence to set the foreground color to the
 // specified color.
-func (b *Builder) FGColor(c Color) {
-	R, G, B := c.RGB()
-	b.buf = fmt.Appendf(b.buf, _FGColor, R, G, B)
-}
+func (b *Builder) FGColor(c Color) { b.buf = append(b.buf, FGColor(c)...) }
 
 // UnBold appends a sequence to disable bold style.
-func (b *Builder) UnBold() {
-	b.buf = append(b.buf, _UnBold...)
-}
+func (b *Builder) UnBold() { b.buf = append(b.buf, UnBold()...) }
 
 // UnItalic appends a sequence to disable italic style.
-func (b *Builder) UnItalic() {
-	b.buf = append(b.buf, _UnItalic...)
-}
+func (b *Builder) UnItalic() { b.buf = append(b.buf, UnItalic()...) }
 
 // UnUnderline appends a sequence to disable underline style.
-func (b *Builder) UnUnderline() {
-	b.buf = append(b.buf, _UnUnderline...)
-}
+func (b *Builder) UnUnderline() { b.buf = append(b.buf, UnUnderline()...) }
 
 // UnStrike appends a sequence to disable strikethrough style.
-func (b *Builder) UnStrike() {
-	b.buf = append(b.buf, _UnStrike...)
-}
+func (b *Builder) UnStrike() { b.buf = append(b.buf, UnStrike()...) }
 
 // UnBGColor appends a sequence to reset the background color to the
 // default.
-func (b *Builder) UnBGColor() {
-	b.buf = append(b.buf, _UnBGColor...)
-}
+func (b *Builder) UnBGColor() { b.buf = append(b.buf, UnBGColor()...) }
 
 // UnFGColor appends a sequence to reset the foreground color to the
 // default.
-func (b *Builder) UnFGColor() {
-	b.buf = append(b.buf, _UnFGColor...)
-}
+func (b *Builder) UnFGColor() { b.buf = append(b.buf, UnFGColor()...) }
 
 // String returns the accumulated string in the builder's buffer.
 func (b *Builder) String() string {
@@ -186,95 +167,62 @@ func (b *Builder) FlushTo(w io.Writer) (int, error) {
 }
 
 // CursorUp appends a sequence to move the cursor up by n lines.
-func (b *Builder) CursorUp(n int) {
-	b.buf = fmt.Appendf(b.buf, _CursorUp, n)
-}
+func (b *Builder) CursorUp(n int) { b.buf = append(b.buf, CursorUp(n)...) }
 
 // CursorDown appends a sequence to move the cursor down by n
 // rows.
-func (b *Builder) CursorDown(n int) {
-	b.buf = fmt.Appendf(b.buf, _CursorDown, n)
-}
+func (b *Builder) CursorDown(n int) { b.buf = append(b.buf, CursorDown(n)...) }
 
 // CursorLeft appends a sequence to move the cursor left by n
 // columns.
-func (b *Builder) CursorLeft(n int) {
-	b.buf = fmt.Appendf(b.buf, _CursorLeft, n)
-}
+func (b *Builder) CursorLeft(n int) { b.buf = append(b.buf, CursorLeft(n)...) }
 
 // CursorRight appends a sequence to move the cursor right by n
 // columns.
-func (b *Builder) CursorRight(n int) {
-	b.buf = fmt.Appendf(b.buf, _CursorRight, n)
-}
+func (b *Builder) CursorRight(n int) { b.buf = append(b.buf, CursorRight(n)...) }
 
 // MoveTo appends a sequence to move the curson to an absolute
 // position on the grid. Both parameters are 0-indexed, albeit the
 // ANSI sequence uses 1-indexed coordinates.
-func (b *Builder) MoveTo(r, c int) {
-	b.buf = fmt.Appendf(b.buf, _MoveTo, r+1, c+1)
-}
+func (b *Builder) MoveTo(r, c int) { b.buf = append(b.buf, MoveTo(r, c)...) }
 
 // ScrollUp appends a sequence to scroll the screen up by n lines.
-
-func (b *Builder) ScrollUp(n int) {
-	b.buf = fmt.Appendf(b.buf, _ScrollUp, n)
-}
+func (b *Builder) ScrollUp(n int) { b.buf = append(b.buf, ScrollUp(n)...) }
 
 // ScrollDown appends a sequence to scroll the screen down by n
 // lines.
-func (b *Builder) ScrollDown(n int) {
-	b.buf = fmt.Appendf(b.buf, _ScrollDown, n)
-}
+func (b *Builder) ScrollDown(n int) { b.buf = append(b.buf, ScrollDown(n)...) }
 
 // EraseScreen appends a sequence to clear the entire screen.
-func (b *Builder) EraseScreen() {
-	b.buf = append(b.buf, _EraseScreen...)
-}
+func (b *Builder) EraseScreen() { b.buf = append(b.buf, EraseScreen()...) }
 
 // EraseLine appends a sequence to clear the current line.
-func (b *Builder) EraseLine() {
-	b.buf = append(b.buf, _EraseLine...)
-}
+func (b *Builder) EraseLine() { b.buf = append(b.buf, EraseLine()...) }
 
 // StyleCursor appends a sequence to set the cursor style. The
 // CursorStyle value is 0-indexed but the ANSI sequence uses
 // 1-indexed values.
-func (b *Builder) StyleCursor(s CursorStyle) {
-	b.buf = fmt.Appendf(b.buf, _StyleCursor, s+1)
-}
+func (b *Builder) StyleCursor(s CursorStyle) { b.buf = append(b.buf, StyleCursor(s)...) }
 
 // ShowCursor appends a sequence to make the cursor visible.
-func (b *Builder) ShowCursor() {
-	b.buf = append(b.buf, _ShowCursor...)
-}
+func (b *Builder) ShowCursor() { b.buf = append(b.buf, ShowCursor()...) }
 
 // HideCursor appends a sequence to make the cursor invisible.
-func (b *Builder) HideCursor() {
-	b.buf = append(b.buf, _HideCursor...)
-}
+func (b *Builder) HideCursor() { b.buf = append(b.buf, HideCursor()...) }
 
 // EnterAlt appends a sequence to switch to the alternate screen
 // buffer.
-func (b *Builder) EnterAlt() {
-	b.buf = append(b.buf, _EnterAlt...)
-}
+func (b *Builder) EnterAlt() { b.buf = append(b.buf, EnterAlt()...) }
 
 // LeaveAlt appends a sequence to switch back to the main screen
 // buffer from the alternate screen buffer.
-func (b *Builder) LeaveAlt() {
-	b.buf = append(b.buf, _LeaveAlt...)
-}
+func (b *Builder) LeaveAlt() { b.buf = append(b.buf, LeaveAlt()...) }
 
 // EnterBracketedPaste appends a sequence to enable bracketed paste
 // mode. In this mode, pasted text is wrapped between ESC[200~ and
 // ESC[201~.
-func (b *Builder) EnterBracketedPaste() {
-	b.buf = append(b.buf, _EnterBracketedPaste...)
-}
+func (b *Builder) EnterBracketedPaste() { b.buf = append(b.buf, EnterBracketedPaste()...) }
 
 // LeaveBracketedPaste appends a sequence to disable bracketed paste
 // mode.
-func (b *Builder) LeaveBracketedPaste() {
-	b.buf = append(b.buf, _LeaveBracketedPaste...)
-}
+func (b *Builder) LeaveBracketedPaste() { b.buf = append(b.buf, LeaveBracketedPaste()...) }
