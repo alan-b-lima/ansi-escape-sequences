@@ -39,12 +39,6 @@ func Italic() string { return _Italic }
 
 // Underline returns an escape sequence that can put an
 // underline on the text.
-//
-// Deprecated: contains a typo, use [Underline] instead.
-func Undeline() string { return Underline() }
-
-// Underline returns an escape sequence that can put an
-// underline on the text.
 func Underline() string { return _Underline }
 
 // Strike returns an escape sequence that can strikethrough
@@ -64,6 +58,30 @@ func FGColor(c Color) string {
 	R, G, B := c.RGB()
 	return fmt.Sprintf(_FGColor, R, G, B)
 }
+
+// UnBold returns an escape sequence that can restore the
+// intensity of the text.
+func UnBold() string      { return _UnBold }
+
+// UnItalic returns an escape sequence that can disable
+// italic.
+func UnItalic() string    { return _UnItalic }
+
+// UnItalic returns an escape sequence that can disable
+// underline.
+func UnUnderline() string { return _UnUnderline }
+
+// UnItalic returns an escape sequence that can disable
+// crossing.
+func UnStrike() string    { return _UnStrike }
+
+// UnItalic returns an escape sequence that can restore the
+// background color to the default.
+func UnBGColor() string   { return _UnBGColor }
+
+// UnItalic returns an escape sequence that can restore the
+// foreground color to the default.
+func UnFGColor() string   { return _UnFGColor }
 
 // HyperLink returns an escape sequence that can turn the
 // given text into a hyperlink that points to the given link.
